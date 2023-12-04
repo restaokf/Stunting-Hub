@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Button, Alert, Linking, TouchableOpacity } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from 'react-native/Libraries/NewAppScreen';
-  
+
 
 const Listrs = () => {
-    const jsonUrl = 'https://script.google.com/macros/s/AKfycbyPWEBjHmWecdpVF2DRnnwjN-QHrhtA4GbPfxxTvd7Rl8G_Ml8nM8xp_luJHlyNNmpW/exec';
+    const jsonUrl = 'https://script.google.com/macros/s/AKfycbz1pF6S52C_9ckdUWPGSMRVwakusZBi-TNFNNFxaoE2Ngv6HjBmwIzM4F0shO_guzeE/exec';
     const [isLoading, setLoading] = useState(true);
     const [dataUser, setDataUser] = useState({});
     const [refresh, setRefresh] = useState(false);
- 
+
     useEffect(() => {
         fetch(jsonUrl)
             .then((response) => response.json())
@@ -50,20 +50,46 @@ const Listrs = () => {
                         refreshing={refresh}
                         keyExtractor={({ id }, index) => id}
                         renderItem={({ item }) => (
-                            <View style={styles.bg}>
-                            <View style={styles.card}>
-                                <View style={styles.avatar}>
-                                    <FontAwesome5 name={item.icon} size={50} color={item.color} />
+                            <TouchableOpacity
+                                accessibilityRole="button"
+                                onPress={() => {
+                                    Linking.openURL(
+                                        `google.navigation:q=${item.latitude},${item.longitude}`,
+                                    );
+                                }}
+                                style={styles.linkContainer}
+                            >
+                                <View style={styles.bg}>
+                                    <View style={styles.card}>
+                                        <View style={styles.avatar}>
+                                            <FontAwesome5 name={item.icon} size={50} color={item.color} />
+                                        </View>
+                                        <View style={{ flex: 1, flexDirection: 'column', marginLeft: 10 }}>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <Text
+                                                    style={[
+                                                        styles.cardtitle,
+                                                        { marginBottom: 8, flex: 1, maxWidth: 200 },
+                                                    ]}
+                                                    numberOfLines={1}
+                                                    ellipsizeMode="tail"
+                                                >
+                                                    {item.name}
+                                                </Text>
+                                                <FontAwesome5
+                                                    name="directions"
+                                                    size={20}
+                                                    color="#6ab0dd"
+                                                />
+                                            </View>
+                                            <Text style={styles.text}>{item.alamat}</Text>
+                                            <Text style={styles.text}>Jenis: {item.jenis}</Text>
+                                            <Text style={styles.text}>No: {item.telpon}</Text>
+                                            <Text style={styles.text}>email: {item.email}</Text>
+                                        </View>
+                                    </View>
                                 </View>
-                                <View>
-                                    <Text style={styles.cardtitle}>{item.name}</Text>
-                                    <Text style={styles.text}>{item.alamat}</Text>
-                                    <Text style={styles.text}>Jenis: {item.jenis}</Text>
-                                    <Text style={styles.text}>No: {item.telpon}</Text>
-                                    <Text style={styles.text}>email: {item.email}</Text>
-                                </View>
-                            </View>
-                            </View>
+                            </TouchableOpacity>
                         )}
                     />
                 </View>
