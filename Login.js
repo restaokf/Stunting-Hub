@@ -4,14 +4,11 @@ import {
   Text,
   Image,
   StatusBar,
-  TextInput,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import LoginButton from './src/components/LoginButton';
 import TextInputEmail from './src/components/TextInputEmail';
-import Menu from './src/components/Menu';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
